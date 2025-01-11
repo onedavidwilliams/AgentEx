@@ -1,0 +1,55 @@
+# Python cache and bytecode files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+env/
+.venv/
+.env/
+
+# Distribution / build artifacts
+build/
+dist/
+*.egg-info/
+*.egg
+*.whl
+
+# Pytest cache
+.pytest_cache/
+.tox/
+
+# IDE configurations
+# PyCharm
+.idea/
+*.iml
+
+# VSCode
+.vscode/
+
+# Logs and debug files
+*.log
+*.log.*
+*.out
+*.err
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Coverage reports
+.coverage
+coverage.xml
+*.cover
+
+# Config files (optional)
+.env
+.env.*
+
+# PyPI artifacts
+pip-wheel-metadata/
