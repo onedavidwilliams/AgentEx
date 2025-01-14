@@ -2,8 +2,8 @@ import aiohttp  # For data fetching
 import os
 import asyncio
 import json  # For returning results as JSON
-from src.agentex import Swarm, CentralHub, Agent, AsyncAgentTask
-from src.agentex.logging.logger import LoggerWrapper
+from agentex import Swarm, CentralHub, Agent, AsyncAgentTask
+from agentex.logging.logger import LoggerWrapper
 from textblob import TextBlob
 
 # --------- Task Implementations --------- #
