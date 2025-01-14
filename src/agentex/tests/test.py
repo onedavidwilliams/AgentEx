@@ -1,8 +1,8 @@
 import aiohttp  # For data fetching
 import os
 import asyncio
-from src.agentex import Swarm, CentralHub, Agent, AsyncAgentTask
-from src.agentex.logging.logger import LoggerWrapper
+from agentex import Swarm, CentralHub, Agent, AsyncAgentTask
+from agentex.logging.logger import LoggerWrapper
 
 # --------- Task Implementations --------- #
 
@@ -52,7 +52,7 @@ class DataFetchTask(AsyncAgentTask):
                     if response.status == 200:
                         self.result = await response.text()
                         self.logger.dprint(f"[DATA FETCH TASK] Success! Data fetched from {self.url}.", level="debug")
-                        print(f"[FETCHED DATA]: {self.result[:200]}...")
+                        #print(f"[FETCHED DATA]: {self.result[:200]}...")
                         self.log(f"Data fetch successful for {self.url}.", level="info")
                         return self.result
                     else:
@@ -80,7 +80,7 @@ async def test_async_io_task():
     # Task with silent logger (no BaseTask.log output)
     task = IOTask("async_io_task", "Asynchronous file reading task", logger=silent_logger)
     await agent.async_assign_task(task)
-    print(f"[TEST RESULT] Async I/O Task result: {task.get_result()}")
+    logger.dprint
 
 
 # 2. Test async data fetch task
