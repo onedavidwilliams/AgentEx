@@ -4,30 +4,39 @@ build-backend = "hatchling.build"
 
 [project]
 name = "agentex"
-version = "0.1.0"
+version = "0.0.5"
 description = "A multi-agent asynchronous framework for swarm communication and task execution."
 readme = "README.md"
 license = { text = "GPL-3.0-or-later" }
 authors = [{ name = "David Williams", email = "deltaflyerguy5@gmail.com" }]
 requires-python = ">=3.8"
-keywords = ["multi-agent", "swarm", "asynchronous", "framework"]
+keywords = ["multi-agent", "swarm", "asynchronous", "framework", "AI", "tasks"]
 classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Operating System :: OS Independent"
 ]
 
 dependencies = [
-    "aiohttp",
+    "aiohttp>=3.8.0",
     "exlog",
-    "termcolor"
+    "textblob",
+    "feedparser"
 ]
 
 [project.optional-dependencies]
 dev = ["pytest", "pytest-asyncio"]
+docs = ["mkdocs", "mkdocs-material"]
+test = ["pytest-cov", "coverage"]
 
 [project.urls]
 Homepage = "https://github.com/onedavidwilliams/AgentEx"
+Source = "https://github.com/onedavidwilliams/AgentEx"
 Issues = "https://github.com/onedavidwilliams/AgentEx/issues"
 
 [tool.hatch.build.targets.wheel]
