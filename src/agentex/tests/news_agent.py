@@ -5,7 +5,7 @@ import json  # For returning results as JSON
 from agentex import Swarm, CentralHub, Agent, AsyncAgentTask
 from agentex.logging.logger import LoggerWrapper
 from textblob import TextBlob
-
+import feedparser
 # --------- Task Implementations --------- #
 
 # 1. Asynchronous RSS News Fetch Task
@@ -15,41 +15,35 @@ class RSSNewsFetchTask(AsyncAgentTask):
         self.rss_url = rss_url
 
     async def execute(self):
-        """Fetches RSS feed articles asynchronously and returns as JSON."""
-        self.logger.dprint(f"[RSS NEWS FETCH TASK] Fetching articles from {self.rss_url}...", level="info")
-
         try:
+            print("Step 1: Entered execute()")
             async with aiohttp.ClientSession() as session:
+                print("Step 2a: Creating aiohttp.ClientSession...")
                 async with session.get(self.rss_url, timeout=10) as response:
+                    print("Step 2b: After session.get(), processing response...")
                     if response.status == 200:
                         text = await response.text()
-                        import feedparser
+                        print(f"DEBUG: Fetched response text (truncated): {text[:100]}...")
+                        
+                        # Parse RSS feed using feedparser
                         feed = feedparser.parse(text)
                         articles = [{"title": entry.title, "summary": entry.get("summary", "")} for entry in feed.entries]
-
-                        self.result = json.dumps({
+                        
+                        # Create JSON-compatible result
+                        result = json.dumps({
                             "status": "success",
                             "num_articles_fetched": len(articles),
                             "articles": articles
-                        }) if articles else json.dumps({
-                            "status": "error",
-                            "message": "No articles found."
                         })
-
-                        self.logger.dprint(f"[RSS NEWS FETCH TASK] Success! Articles fetched: {len(articles)}", level="debug")
-                        return self.result
+                        print(f"DEBUG: Parsed {len(articles)} articles from RSS feed.")
+                        return result
                     else:
-                        self.result = json.dumps({
-                            "status": "error",
-                            "message": f"Failed to fetch articles (status code: {response.status})"
-                        })
-                        self.logger.dprint(f"[ERROR] Failed to fetch articles (status code: {response.status})", level="error")
+                        print(f"DEBUG: Non-200 response received: {response.status}")
+                        return json.dumps({"status": "error", "message": f"HTTP {response.status}"})
         except Exception as e:
-            self.result = json.dumps({
-                "status": "error",
-                "message": f"Exception during RSS fetch: {str(e)}"
-            })
-            self.logger.dprint(f"[ERROR] Exception during RSS fetch: {str(e)}", level="error")
+            print(f"DEBUG: Exception in execute(): {e}")
+            return json.dumps({"status": "error", "message": str(e)})
+
 
 
 # 2. Asynchronous Sentiment Analysis Task
