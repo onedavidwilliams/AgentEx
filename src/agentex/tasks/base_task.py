@@ -1,31 +1,36 @@
 from abc import ABC, abstractmethod
-from exlog import ExLog
-from ..logging.logger import LoggerWrapper
+import uuid
 
 class BaseTask(ABC):
-    """
-    Base class for shared attributes and logging.
-    """
-    def __init__(self, task_name, description, logger=None, silent=False):
-        """
-        :param task_name: Name of the task.
-        :param description: Description of the task.
-        :param logger: Logger instance (ExLog or standard logger).
-        :param silent: Whether to suppress logging only within this task's `.log` method.
-        """
-        self.task_name = task_name
-        self.description = description
-        self.logger = logger or LoggerWrapper(log_level=1)
-        self.result = None
-        self.silent = silent  # Add silent mode specific to the `BaseTask.log()`
+    def __init__(self, task_type: str, payload: dict, retries: int = 0):
+        self.task_id = str(uuid.uuid4())
+        self.task_type = task_type
+        self.payload = payload
+        self.retries = retries
+        self.status = "pending"  # pending, in_progress, completed, failed
+        self.result = None  # Store success result or error message
 
-    def log(self, message, level="info"):
-        """
-        Log a message if `silent` is False.
-        """
-        if self.silent:  # Check if this specific task should suppress logs
-            return  # Do nothing if silent mode is enabled
+    async def mark_in_progress(self):
+        """Mark the task as in progress."""
+        self.status = "in_progress"
+        print(f"Task '{self.task_type}' with ID: {self.task_id} is now in progress.")
 
-        if self.logger:
-            log_method = getattr(self.logger, level, self.logger.info)
-            log_method(f"---{self.task_name}: {message}")
+    async def mark_completed(self, result):
+        """Mark the task as completed and store the result."""
+        self.status = "completed"
+        self.result = result
+        print(f"Task '{self.task_type}' with ID: {self.task_id} completed successfully: {result}")
+
+    async def mark_failed(self, error_message):
+        """Mark the task as failed and store the error message."""
+        self.status = "failed"
+        self.result = error_message
+        print(f"Task '{self.task_type}' with ID: {self.task_id} failed: {error_message}")
+
+    @abstractmethod
+    async def execute(self):
+        """
+        This method should be overridden by subclasses to define task-specific logic.
+        """
+        pass
+

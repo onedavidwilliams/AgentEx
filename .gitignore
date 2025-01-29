@@ -53,3 +53,6 @@ coverage.xml
 
 # PyPI artifacts
 pip-wheel-metadata/
+
+# Simulations - Terraforming, Space Command, Neural Net creation - unreleased
+simulations/

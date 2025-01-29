@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "agentex"
-version = "0.0.5"
+version = "0.0.7"
 description = "A multi-agent asynchronous framework for swarm communication and task execution."
 readme = "README.md"
 license = { text = "GPL-3.0-or-later" }
@@ -26,7 +26,8 @@ dependencies = [
     "aiohttp>=3.8.0",
     "exlog",
     "textblob",
-    "feedparser"
+    "feedparser",
+    "aio-pika"
 ]
 
 [project.optional-dependencies]
