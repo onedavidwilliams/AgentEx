@@ -1,5 +1,0 @@
-aiofiles
-aio-pika
-exlog
-textblob
-feedparser
